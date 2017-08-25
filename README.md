@@ -1,5 +1,11 @@
 # test-java
 
+Este é um projeto Spring Boot que utiliza o Maven para gerenciar as dependencias e automatizar o build
+
+No Ubuntu o comando ./mvnw pode ser utilizado para rodar o projeto
+
+Um banco de dados Postgres está configurado.
+
 # Questão 4
 
 Formalmente, um conjunto de processos está bloqueado se cada um dos processos está aguardando um evento que apenas outro processo neste mesmo conjunto pode causar.
