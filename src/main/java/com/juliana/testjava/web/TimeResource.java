@@ -2,13 +2,16 @@ package com.juliana.testjava.web;
 
 import com.juliana.testjava.domain.Time;
 
+import com.codahale.metrics.annotation.Timed;
+
 import com.juliana.testjava.repository.TimeRepository;
-import com.juliana.testjava.web.rest.util.HeaderUtil;
+import com.juliana.testjava.web.HeaderUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,46 +33,6 @@ public class TimeResource {
         
     @Inject
     private TimeRepository timeRepository;
-
-    /**
-     * POST  /times : Create a new time.
-     *
-     * @param time the time to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new time, or with status 400 (Bad Request) if the time has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PostMapping("/times")
-    public ResponseEntity<Time> createTime(@Valid @RequestBody Time time) throws URISyntaxException {
-        log.debug("REST request to save Time : {}", time);
-        if (time.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("time", "idexists", "A new time cannot already have an ID")).body(null);
-        }
-        Time result = timeRepository.save(time);
-        return ResponseEntity.created(new URI("/api/times/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("time", result.getId().toString()))
-            .body(result);
-    }
-
-    /**
-     * PUT  /times : Updates an existing time.
-     *
-     * @param time the time to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated time,
-     * or with status 400 (Bad Request) if the time is not valid,
-     * or with status 500 (Internal Server Error) if the time couldnt be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/times")
-    public ResponseEntity<Time> updateTime(@Valid @RequestBody Time time) throws URISyntaxException {
-        log.debug("REST request to update Time : {}", time);
-        if (time.getId() == null) {
-            return createTime(time);
-        }
-        Time result = timeRepository.save(time);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("time", time.getId().toString()))
-            .body(result);
-    }
 
     /**
      * GET  /times : get all the times.
@@ -98,19 +61,6 @@ public class TimeResource {
                 result,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    /**
-     * DELETE  /times/:id : delete the "id" time.
-     *
-     * @param id the id of the time to delete
-     * @return the ResponseEntity with status 200 (OK)
-     */
-    @DeleteMapping("/times/{id}")
-    public ResponseEntity<Void> deleteTime(@PathVariable Long id) {
-        log.debug("REST request to delete Time : {}", id);
-        timeRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("time", id.toString())).build();
     }
 
 }

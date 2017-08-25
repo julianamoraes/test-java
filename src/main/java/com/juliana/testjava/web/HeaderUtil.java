@@ -13,8 +13,8 @@ public class HeaderUtil {
 
     public static HttpHeaders createAlert(String message, String param) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-eudorahackApp-alert", message);
-        headers.add("X-eudorahackApp-params", param);
+        headers.add("X-testjavaApp-alert", message);
+        headers.add("X-testjavaApp-params", param);
         return headers;
     }
 
@@ -33,8 +33,8 @@ public class HeaderUtil {
     public static HttpHeaders createFailureAlert(String entityName, String errorKey, String defaultMessage) {
         log.error("Entity creation failed, {}", defaultMessage);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-eudorahackApp-error", defaultMessage);
-        headers.add("X-eudorahackApp-params", entityName);
+        headers.add("X-testjavaApp-error", defaultMessage);
+        headers.add("X-testjavaApp-params", entityName);
         return headers;
     }
 }
