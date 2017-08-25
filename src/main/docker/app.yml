@@ -1,0 +1,18 @@
+version: '2'
+services:
+    testjava-app:
+        image: testjava
+        external_links:
+            - testjava-postgresql:postgresql
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/test
+            - SPRING_DATASOURCE_USERNAME=postgres
+            - SPRING_DATASOURCE_PASSWORD=postgres
+        ports:
+            - 8080:8080
+    testjava-postgresql:
+        extends:
+            file: postgresql.yml
+            service: testjava-postgresql
+    

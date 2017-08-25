@@ -1,0 +1,10 @@
+version: '2'
+services:
+    testjava-postgresql:
+        container_name: testjava-postgresql
+        image: postgres:9.5.4
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        ports:
+            - 5432:5432
